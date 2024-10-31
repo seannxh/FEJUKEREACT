@@ -22,68 +22,79 @@ const App = () => {
     const fetchTracks = async () => {
       try {
         const trackData = await index();
-        console.log('trackData: ', trackData);
+        console.log("trackData: ", trackData);
         setTracks(trackData);
       } catch (err) {
-        console.log(err);
+        console.log("Error fetching tracks:", err);
       }
     };
     fetchTracks();
   }, []);
 
   const handleAddTrack = async (trackFormData) => {
-    const newTrack = await Create(trackFormData);
-    setTracks([newTrack, ...tracks]);
-    console.log(trackFormData);
-    navigate("/tracks");
+    try {
+      const newTrack = await Create(trackFormData);
+      setTracks([newTrack, ...tracks]);
+      navigate("/tracks");
+    } catch (err) {
+      console.error("Error adding track:", err);
+    }
   };
 
   const handleDeleteTrack = async (trackId) => {
-    console.log("TrackId:", trackId);
-    await deleteTrack(trackId);
-    setTracks(
-      tracks.filter((track) => {
-        return track._id !== trackId;
-      })
-    );
-    navigate("/tracks");
+    try {
+      await deleteTrack(trackId);
+      setTracks(tracks.filter((track) => track._id !== trackId));
+      navigate("/tracks");
+    } catch (err) {
+      console.error("Error deleting track:", err);
+    }
   };
 
   const handleUpdateTrack = async (trackId, trackFormData) => {
-    const updatedTrack = await update(trackId, trackFormData);
-    const updatedTracks = tracks.map(track => 
-      track._id === trackId ? updatedTrack : track
-    );
-    setTracks(updatedTracks);
-    navigate(`/tracks`);
+    try {
+      const updatedTrack = await update(trackId, trackFormData);
+      const updatedTracks = tracks.map((track) =>
+        track._id === trackId ? updatedTrack : track
+      );
+      navigate("/tracks");
+    } catch (err) {
+      console.error("Error updating track:", err);
+    }
   };
 
   const handlePlayTrack = (track) => {
-    if (playing && playing._id === track._id) {
-      setPlaying(null);
-    } else {
-      setPlaying(track);
-    }
+    setPlaying(track);
   };
 
   return (
     <>
       <NavBar />
       <Routes>
-        <Route path='/' element={<Home playing={playing} tracks={tracks}/>} />
-        <Route path='/tracks' element={
-              <TrackList  tracks={tracks}  
-                          handleDeleteTrack={handleDeleteTrack}
-                          handlePlayTrack={handlePlayTrack} />} />
-        <Route path='/tracks/new' element={<TrackForm handleAddTrack={handleAddTrack} />} />
-        <Route path='/tracks/:trackId' element={<TrackDetails/>} />
-        <Route path='/tracks/:trackId/edit' element={<TrackForm handleUpdateTrack={handleUpdateTrack}/>} />
+        <Route path="/" element={<Home tracks={tracks} />} />
+        <Route
+          path="/tracks"
+          element={
+            <TrackList
+              tracks={tracks}
+              handleDeleteTrack={handleDeleteTrack}
+              handlePlayTrack={handlePlayTrack}
+            />
+          }
+        />
+        <Route
+          path="/tracks/new"
+          element={<TrackForm handleAddTrack={handleAddTrack} />}
+        />
+        <Route path="/tracks/:trackId" element={<TrackDetails />} />
+        <Route
+          path="/tracks/:trackId/edit"
+          element={<TrackForm handleUpdateTrack={handleUpdateTrack} />}
+        />
       </Routes>
-      {playing && <NowPlaying track={playing} />} 
+      {playing && <NowPlaying track={playing} />}
     </>
   );
-}
-
-
+};
 
 export default App;
