@@ -1,8 +1,7 @@
-// NowPlaying.jsx
 import React from 'react';
 
 const NowPlaying = ({ track }) => {
-  if (!track) return null; // Only render if a track is provided
+  if (!track) return null;
 
   return (
     <div className="now-playing">

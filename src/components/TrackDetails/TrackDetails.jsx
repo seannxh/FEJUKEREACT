@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { index, Show, Create, CreateTrack, deleteTrack, update } from "../../services/trackService.js";
+import { Show } from "../../services/trackService.js";
 
 const TrackDetails = () => {
     const { trackId } = useParams();

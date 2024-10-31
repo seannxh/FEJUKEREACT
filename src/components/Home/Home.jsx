@@ -1,5 +1,4 @@
 import TrackList from "../TrackList/TrackList.jsx";
-import { useState } from 'react';
 
 const Home = ({tracks}) => {
 

@@ -5,8 +5,8 @@ const TrackList = ({ tracks = [], handleDeleteTrack, handlePlayTrack }) => {
     <div>
       <h4>All Available Tracks!</h4>
       {tracks.map((track, index) => (
-        track && track.title ? ( // Check if track is defined and has a title
-          <div key={track._id || index}> {/* Fallback to index as key if _id is missing */}
+        track && track.title ? ( 
+          <div key={track._id || index}> 
             <h3>{track.title}</h3>
             <p>By: {track.artist}</p>
             <img src={track.coverArtUrl} alt={`${track.title} Cover Art`} />
@@ -22,7 +22,7 @@ const TrackList = ({ tracks = [], handleDeleteTrack, handlePlayTrack }) => {
               <button onClick={() => handleDeleteTrack(track._id)}>Delete</button>
             </div>
           </div>
-        ) : null // If track or title is missing, render nothing
+        ) : null
       ))}
     </div>
   );
